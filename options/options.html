@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfoJOB — Configurações</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --border: #dde1e9;
+    --accent: #1a56db;
+    --accent-light: #e8effe;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --text: #111827;
+    --text2: #4b5563;
+    --text3: #9ca3af;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* Header */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+    margin-left: 4px;
+  }
+
+  .header-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 28px;
+  }
+
+  /* Sections */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  .section-icon.blue { background: var(--accent-light); color: var(--accent); }
+  .section-icon.green { background: var(--success-light); color: var(--success); }
+  .section-icon.amber { background: var(--warning-light); color: var(--warning); }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  .section-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Form elements */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label.field-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: 0.01em;
+  }
+
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus,
+  select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.08);
+  }
+
+  input.mono { font-family: var(--mono); font-size: 12px; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.4;
+  }
+
+  /* Consulta cards */
+  .consultas-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .consulta-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .consulta-card.active { border-color: var(--accent); }
+
+  .consulta-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: var(--surface);
+    user-select: none;
+  }
+
+  .consulta-header:hover { background: var(--surface2); }
+
+  .consulta-checkbox {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .consulta-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .consulta-desc {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  .badge-async {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--warning-light);
+    color: var(--warning);
+    font-weight: 500;
+    border: 1px solid #fcd34d;
+  }
+
+  .consulta-options {
+    padding: 10px 14px 12px 40px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .consulta-options.hidden { display: none; }
+
+  .opt-label {
+    font-size: 12px;
+    color: var(--text2);
+    white-space: nowrap;
+  }
+
+  .opt-select {
+    width: auto;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .opt-input {
+    width: 90px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .opt-readonly {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px 8px;
+  }
+
+  .efin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .efin-field label {
+    font-size: 11px;
+    color: var(--text3);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 9px 18px;
+    border-radius: var(--radius);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #1447c2; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--surface2); }
+
+  .actions-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    z-index: 100;
+  }
+
+  .save-msg {
+    font-size: 12px;
+    color: var(--success);
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .save-msg.show { display: flex; }
+
+  /* Sobre */
+  .about-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .about-row:last-child { border-bottom: none; }
+  .about-key { color: var(--text2); }
+  .about-val { color: var(--text); font-weight: 500; }
+  .about-val.mono { font-family: var(--mono); font-size: 12px; }
+
+  .devs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .dev-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .dev-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon"><img src="../icons/icon128.png" alt="InfoJOB" style="width:32px;height:32px;object-fit:contain;border-radius:6px;"></div>
+    <span class="logo-text">InfoJOB</span>
+    <span class="logo-sub">configurações</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" id="btnFechar">Fechar</button>
+  </div>
+</div>
+
+<div class="container">
+  <div style="text-align:center; margin-bottom: 24px;">
+    <img src="../icons/logo_completa.jpeg" alt="InfoJOB" style="width:200px; object-fit:contain;">
+  </div>
+  <h1 class="page-title">Configurações</h1>
+  <p class="page-sub">Defina os parâmetros padrão para automação das consultas INFOJUD no eCAC.</p>
+
+  <!-- Dados do processo -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">⚙</div>
+      <span class="section-title">Dados padrão do processo</span>
+    </div>
+    <div class="section-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="field-label">Tipo do processo</label>
+          <select id="tipoProcesso">
+            <option value="Ação Trabalhista">Ação Trabalhista</option>
+            <option value="Ação Cível">Ação Cível</option>
+            <option value="Ação Criminal">Ação Criminal</option>
+            <option value="Execução Comum">Execução Comum</option>
+            <option value="Execução Fiscal">Execução Fiscal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Justificativa</label>
+          <input type="text" id="justificativa" value="execução">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="field-label">Vara (exatamente como aparece no dropdown do eCAC)</label>
+        <input type="text" id="vara" class="mono" value="008 - 8ª Vara do Trabalho de Goiânia">
+        <span class="field-hint">A extensão buscará esse texto exato no dropdown. Ex: "008 - 8ª Vara do Trabalho de Goiânia"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pasta de saída -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon green">📁</div>
+      <span class="section-title">Pasta de saída dos PDFs</span>
+    </div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="field-label">Nome da subpasta (dentro da pasta Downloads do navegador)</label>
+        <input type="text" id="pastaSaida" class="mono" placeholder="ex: INFOJUD" maxlength="10" value="INFOJUD" oninput="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'').toUpperCase().substring(0,10)">
+        <span class="field-hint">Somente letras e números, máximo 10 caracteres. Os arquivos serão salvos em: Downloads/<strong id="pastaPreview">INFOJUD</strong>/PROCESSO_NOME TIPO.pdf</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consultas CPF -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">👤</div>
+      <span class="section-title">Consultas — CPF (Pessoa Física)</span>
+    </div>
+    <div class="section-body">
+      <div class="consultas-grid" id="cpf-grid">
+
+        <!-- DIRPF -->
+        <div class="consulta-card active" id="card-cpf-dirpf">
+          <div class="consulta-header" data-toggle="cpf-dirpf">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_dirpf" checked data-check="cpf-dirpf">
+            <span class="consulta-name">DIRPF</span>
+            <span class="consulta-desc">Declaração de Imposto de Renda PF</span>
+          </div>
+          <div class="consulta-options" id="opts-cpf-dirpf">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cpf_dirpf_anos">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DITR CPF -->
+        <div class="consulta-card active" id="card-cpf-ditr">
+          <div class="consulta-header" data-toggle="cpf-ditr">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_ditr" checked data-check="cpf-ditr">
+            <span class="consulta-name">DITR</span>
+            <span class="consulta-desc">Declaração do Imposto Territorial Rural</span>
+          </div>
+          <div class="consulta-options" id="opts-cpf-ditr">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cpf_ditr_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DOI CPF -->
+        <div class="consulta-card active" id="card-cpf-doi">
+          <div class="consulta-header" data-toggle="cpf-doi">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_doi" checked data-check="cpf-doi">
+            <span class="consulta-name">DOI</span>
+            <span class="consulta-desc">Declaração sobre Operações Imobiliárias</span>
+          </div>
+          <div class="consulta-options" id="opts-cpf-doi">
+            <span class="opt-label">Data inicial:</span>
+            <input type="text" class="opt-input" id="cpf_doi_ini" value="01/1980" placeholder="MM/AAAA">
+            <span class="opt-label">até</span>
+            <span class="opt-readonly">mês corrente</span>
+            <span class="opt-label" style="font-size:11px;color:var(--text3);">(preenchido automaticamente)</span>
+          </div>
+        </div>
+
+        <!-- DECRED CPF -->
+        <div class="consulta-card active" id="card-cpf-decred">
+          <div class="consulta-header" data-toggle="cpf-decred">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_decred" checked data-check="cpf-decred">
+            <span class="consulta-name">DECRED</span>
+            <span class="consulta-desc">Declaração de Operações com Cartão de Crédito</span>
+          </div>
+          <div class="consulta-options" id="opts-cpf-decred">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cpf_decred_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DIMOB CPF -->
+        <div class="consulta-card active" id="card-cpf-dimob">
+          <div class="consulta-header" data-toggle="cpf-dimob">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_dimob" checked data-check="cpf-dimob">
+            <span class="consulta-name">DIMOB</span>
+            <span class="consulta-desc">Declaração de Informações sobre Atividades Imobiliárias</span>
+          </div>
+          <div class="consulta-options" id="opts-cpf-dimob">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cpf_dimob_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- Info. Cadastrais CPF -->
+        <div class="consulta-card" id="card-cpf-infocad">
+          <div class="consulta-header" data-toggle="cpf-infocad">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_infocad" data-check="cpf-infocad">
+            <span class="consulta-name">Info. Cadastrais</span>
+            <span class="consulta-desc">Dados cadastrais do contribuinte</span>
+          </div>
+        </div>
+
+        <!-- eFinanceira CPF -->
+        <div class="consulta-card" id="card-cpf-efin">
+          <div class="consulta-header" data-toggle="cpf-efin">
+            <input type="checkbox" class="consulta-checkbox" id="cpf_efin" data-check="cpf-efin">
+            <span class="consulta-name">eFinanceira</span>
+            <span class="consulta-desc">Informações de contas e investimentos</span>
+            <span class="badge-async">resposta assíncrona</span>
+          </div>
+          <div class="consulta-options hidden" id="opts-cpf-efin">
+            <div class="efin-grid">
+              <div class="efin-field">
+                <label>Tipo de conta</label>
+                <select class="opt-select" style="width:100%" id="cpf_efin_conta">
+                  <option selected>Conta de Depósito</option>
+                  <option>Conta de Custódia</option>
+                  <option>Conta de Investimento</option>
+                  <option>Conta de Seguro</option>
+                  <option>Consórcio</option>
+                  <option>Conta em moeda estrangeira</option>
+                  <option>Todas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Tipo de relação</label>
+                <select class="opt-select" style="width:100%" id="cpf_efin_relacao">
+                  <option selected>Titular</option>
+                  <option>Procurador</option>
+                  <option>Representante legal</option>
+                  <option>Intermediado</option>
+                  <option>Beneficiário Final</option>
+                  <option>Doador - Empréstimo de TVM BTC</option>
+                  <option>Tomador - Empréstimo de TVM BTC</option>
+                  <option>Todas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Tipo de extrato</label>
+                <select class="opt-select" style="width:100%" id="cpf_efin_extrato">
+                  <option selected>Contas e movimentações</option>
+                  <option>Somente da lista de contas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Exibir informações de câmbio</label>
+                <select class="opt-select" style="width:100%" id="cpf_efin_cambio">
+                  <option selected>Não</option>
+                  <option>Sim</option>
+                </select>
+              </div>
+              <div class="efin-field" style="grid-column: span 2">
+                <label>Quantidade de anos: últimos disponíveis</label>
+                <select class="opt-select" id="cpf_efin_anos" style="width:120px">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Consultas CNPJ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon amber">🏢</div>
+      <span class="section-title">Consultas — CNPJ (Pessoa Jurídica)</span>
+    </div>
+    <div class="section-body">
+      <div class="consultas-grid" id="cnpj-grid">
+
+        <!-- DIPJ -->
+        <div class="consulta-card" id="card-cnpj-dipj">
+          <div class="consulta-header" data-toggle="cnpj-dipj">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_dipj" data-check="cnpj-dipj">
+            <span class="consulta-name">DIPJ / PJ Simpl.</span>
+            <span class="consulta-desc">Declaração PJ Simplificada</span>
+          </div>
+          <div class="consulta-options hidden" id="opts-cnpj-dipj">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cnpj_dipj_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- ECF -->
+        <div class="consulta-card" id="card-cnpj-ecf">
+          <div class="consulta-header" data-toggle="cnpj-ecf">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_ecf" data-check="cnpj-ecf">
+            <span class="consulta-name">ECF (substitui IRPJ)</span>
+            <span class="consulta-desc">Escrituração Contábil Fiscal</span>
+          </div>
+          <div class="consulta-options hidden" id="opts-cnpj-ecf">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cnpj_ecf_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DITR CNPJ -->
+        <div class="consulta-card active" id="card-cnpj-ditr">
+          <div class="consulta-header" data-toggle="cnpj-ditr">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_ditr" checked data-check="cnpj-ditr">
+            <span class="consulta-name">DITR</span>
+            <span class="consulta-desc">Declaração do Imposto Territorial Rural</span>
+          </div>
+          <div class="consulta-options" id="opts-cnpj-ditr">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cnpj_ditr_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DOI CNPJ -->
+        <div class="consulta-card active" id="card-cnpj-doi">
+          <div class="consulta-header" data-toggle="cnpj-doi">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_doi" checked data-check="cnpj-doi">
+            <span class="consulta-name">DOI</span>
+            <span class="consulta-desc">Declaração sobre Operações Imobiliárias</span>
+          </div>
+          <div class="consulta-options" id="opts-cnpj-doi">
+            <span class="opt-label">Data inicial:</span>
+            <input type="text" class="opt-input" id="cnpj_doi_ini" value="01/1980" placeholder="MM/AAAA">
+            <span class="opt-label">até</span>
+            <span class="opt-readonly">mês corrente</span>
+            <span class="opt-label" style="font-size:11px;color:var(--text3);">(preenchido automaticamente)</span>
+          </div>
+        </div>
+
+        <!-- DECRED CNPJ -->
+        <div class="consulta-card active" id="card-cnpj-decred">
+          <div class="consulta-header" data-toggle="cnpj-decred">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_decred" checked data-check="cnpj-decred">
+            <span class="consulta-name">DECRED</span>
+            <span class="consulta-desc">Declaração de Operações com Cartão de Crédito</span>
+          </div>
+          <div class="consulta-options" id="opts-cnpj-decred">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cnpj_decred_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- DIMOB CNPJ -->
+        <div class="consulta-card active" id="card-cnpj-dimob">
+          <div class="consulta-header" data-toggle="cnpj-dimob">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_dimob" checked data-check="cnpj-dimob">
+            <span class="consulta-name">DIMOB</span>
+            <span class="consulta-desc">Declaração de Informações sobre Atividades Imobiliárias</span>
+          </div>
+          <div class="consulta-options" id="opts-cnpj-dimob">
+            <span class="opt-label">Quantidade de anos:</span>
+            <select class="opt-select" id="cnpj_dimob_anos">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select>
+            <span class="opt-label">últimos disponíveis</span>
+          </div>
+        </div>
+
+        <!-- CPMF -->
+        <div class="consulta-card" id="card-cnpj-cpmf">
+          <div class="consulta-header" data-toggle="cnpj-cpmf">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_cpmf" data-check="cnpj-cpmf">
+            <span class="consulta-name">CPMF</span>
+            <span class="consulta-desc">Contribuição Provisória sobre Movimentação Financeira</span>
+          </div>
+          <div class="consulta-options hidden" id="opts-cnpj-cpmf">
+            <span class="opt-label">Período:</span>
+            <input type="text" class="opt-input" id="cnpj_cpmf_ini" placeholder="MM/AAAA">
+            <span class="opt-label">até</span>
+            <input type="text" class="opt-input" id="cnpj_cpmf_fim" placeholder="MM/AAAA">
+          </div>
+        </div>
+
+        <!-- Info. Cadastrais CNPJ -->
+        <div class="consulta-card" id="card-cnpj-infocad">
+          <div class="consulta-header" data-toggle="cnpj-infocad">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_infocad" data-check="cnpj-infocad">
+            <span class="consulta-name">Info. Cadastrais</span>
+            <span class="consulta-desc">Dados cadastrais do contribuinte</span>
+          </div>
+        </div>
+
+        <!-- eFinanceira CNPJ -->
+        <div class="consulta-card" id="card-cnpj-efin">
+          <div class="consulta-header" data-toggle="cnpj-efin">
+            <input type="checkbox" class="consulta-checkbox" id="cnpj_efin" data-check="cnpj-efin">
+            <span class="consulta-name">eFinanceira</span>
+            <span class="consulta-desc">Informações de contas e investimentos</span>
+            <span class="badge-async">resposta assíncrona</span>
+          </div>
+          <div class="consulta-options hidden" id="opts-cnpj-efin">
+            <div class="efin-grid">
+              <div class="efin-field">
+                <label>Tipo de conta</label>
+                <select class="opt-select" style="width:100%" id="cnpj_efin_conta">
+                  <option selected>Conta de Depósito</option>
+                  <option>Conta de Custódia</option>
+                  <option>Conta de Investimento</option>
+                  <option>Conta de Seguro</option>
+                  <option>Consórcio</option>
+                  <option>Conta em moeda estrangeira</option>
+                  <option>Todas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Tipo de relação</label>
+                <select class="opt-select" style="width:100%" id="cnpj_efin_relacao">
+                  <option selected>Titular</option>
+                  <option>Procurador</option>
+                  <option>Representante legal</option>
+                  <option>Intermediado</option>
+                  <option>Beneficiário Final</option>
+                  <option>Doador - Empréstimo de TVM BTC</option>
+                  <option>Tomador - Empréstimo de TVM BTC</option>
+                  <option>Todas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Tipo de extrato</label>
+                <select class="opt-select" style="width:100%" id="cnpj_efin_extrato">
+                  <option selected>Contas e movimentações</option>
+                  <option>Somente da lista de contas</option>
+                </select>
+              </div>
+              <div class="efin-field">
+                <label>Exibir informações de câmbio</label>
+                <select class="opt-select" style="width:100%" id="cnpj_efin_cambio">
+                  <option selected>Não</option>
+                  <option>Sim</option>
+                </select>
+              </div>
+              <div class="efin-field" style="grid-column: span 2">
+                <label>Quantidade de anos: últimos disponíveis</label>
+                <select class="opt-select" id="cnpj_efin_anos" style="width:120px">
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Sobre -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon blue">ℹ</div>
+      <span class="section-title">Sobre o InfoJOB</span>
+    </div>
+    <div class="section-body">
+      <div class="about-row">
+        <span class="about-key">Nome</span>
+        <span class="about-val">InfoJOB — Automação INFOJUD</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Versão</span>
+        <span class="about-val mono">2.1.7</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Compatibilidade</span>
+        <span class="about-val">Chrome</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Desenvolvedores</span>
+        <div class="devs">
+          <div class="dev-tag">
+            <div class="dev-avatar">RM</div>
+            Rodrigo Madalosso Araujo — TRT 18ª Região
+          </div>
+          <div class="dev-tag">
+            <div class="dev-avatar">LV</div>
+            Leandro Vinícius de Magalhães Rodrigues — TRT 19ª Região
+          </div>
+        </div>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Uso</span>
+        <span class="about-val" style="font-size:12px;color:var(--text2);">Exclusivo para servidores do Poder Judiciário. Dados protegidos pela LGPD.</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Privacidade</span>
+        <span class="about-val" style="font-size:12px;color:var(--text2);">🔒 Dados temporários de processamento são removidos automaticamente do armazenamento local ao concluir cada operação.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Barra de ações fixa -->
+<div class="actions-bar">
+  <button class="btn btn-primary" id="btnSalvar">Salvar configurações</button>
+  <button class="btn btn-ghost" id="btnRestaurar">Restaurar padrões</button>
+  <div class="save-msg" id="saveMsg">✓ Configurações salvas com sucesso!</div>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>

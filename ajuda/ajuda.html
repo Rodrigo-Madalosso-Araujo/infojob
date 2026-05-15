@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>InfoJOB — Ajuda</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 32px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      padding: 40px 48px;
+      max-width: 520px;
+      width: 100%;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .logo img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+    .logo-text {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a2e5a;
+    }
+    .logo-sub {
+      font-size: 13px;
+      color: #888;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e5e9f0;
+      margin-bottom: 28px;
+    }
+    h2 {
+      font-size: 15px;
+      color: #1a2e5a;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .doc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .doc-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #e5e9f0;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1a2e5a;
+      background: #f8fafd;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .doc-item:hover {
+      background: #e8edf5;
+      border-color: #1a2e5a;
+    }
+    .doc-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .doc-info { flex: 1; }
+    .doc-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .doc-desc {
+      font-size: 11px;
+      color: #888;
+    }
+    .doc-badge {
+      font-size: 10px;
+      background: #e8edf5;
+      color: #1a2e5a;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .doc-badge.zip { background: #fef3c7; color: #92400e; }
+    .footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="../icons/icon128.png" alt="InfoJOB">
+      <div>
+        <div class="logo-text">InfoJOB</div>
+        <div class="logo-sub">Central de Ajuda</div>
+      </div>
+    </div>
+    <hr>
+    <h2>Documentos disponíveis</h2>
+    <div class="doc-list">
+
+      <a class="doc-item" href="https://github.com/Rodrigo-Madalosso-Araujo/infojob/raw/main/InfoJOB_Guia_do_Usuario-final.pdf" target="_blank">
+        <span class="doc-icon">📄</span>
+        <div class="doc-info">
+          <div class="doc-title">Guia do Usuário</div>
+          <div class="doc-desc">Instruções completas de instalação, configuração e uso</div>
+        </div>
+        <span class="doc-badge">PDF</span>
+      </a>
+
+      <a class="doc-item" href="https://github.com/Rodrigo-Madalosso-Araujo/infojob/raw/main/InfoJOB_Politica_de_Privacidade.docx" target="_blank">
+        <span class="doc-icon">🔒</span>
+        <div class="doc-info">
+          <div class="doc-title">Política de Privacidade</div>
+          <div class="doc-desc">Como a extensão trata os dados — conformidade com a LGPD</div>
+        </div>
+        <span class="doc-badge">DOCX</span>
+      </a>
+
+      <a class="doc-item" href="https://github.com/Rodrigo-Madalosso-Araujo/infojob/raw/main/InfoJOB_Justificativas_ChromeStore.docx" target="_blank">
+        <span class="doc-icon">📋</span>
+        <div class="doc-info">
+          <div class="doc-title">Justificativas Chrome Web Store</div>
+          <div class="doc-desc">Justificativa das permissões para publicação na Chrome Store</div>
+        </div>
+        <span class="doc-badge">DOCX</span>
+      </a>
+
+    </div>
+    <div class="footer">
+      InfoJOB v2.1.7 &mdash; Desenvolvido para o Poder Judiciário
+    </div>
+  </div>
+</body>
+</html>

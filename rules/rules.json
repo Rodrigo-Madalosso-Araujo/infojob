@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "Content-Disposition",
+          "operation": "set",
+          "value": "attachment; filename=\"declaracao.pdf\""
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "solicitadorPDFMidas.asp",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "other"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "Content-Disposition",
+          "operation": "set",
+          "value": "attachment; filename=\"declaracao_doi.pdf\""
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "servicos.receita.fazenda.gov.br/Servicos/doi/Infojud/Declaracoes.asp",
+      "resourceTypes": ["main_frame", "sub_frame", "xmlhttprequest", "other"]
+    }
+  }
+]

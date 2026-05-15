@@ -1,117 +1,137 @@
-# InfoJOB
-
-> Chrome extension for automating INFOJUD queries on Brazil's eCAC tax portal, designed exclusively for Brazilian Judiciary employees.
-
----
-
-## Overview
-
-**InfoJOB** automates the process of submitting batch requests to the **INFOJUD** system on the Brazilian Federal Revenue's **eCAC** portal.
-
-Instead of filling out forms manually for each case, authorized Judiciary employees can import a spreadsheet with multiple judicial cases and have all requests submitted automatically, saving hours of repetitive work.
+# InfoJOB — Automação INFOJUD
+**Versão:** 2.2.0  
+**Desenvolvedores:** Rodrigo Madalosso Araujo (TRT18) · Leandro Vinícius de Magalhães Rodrigues (TRT19)
 
 ---
 
-## Features
+## O que é
 
-- Import `.xlsx` and `.ods` spreadsheets with judicial case data
-- Automatic batch submission of INFOJUD requests
-- Automatic download and renaming of received documents
-- Organized file storage with configurable output folder
-- Automatic generation of informational PDFs (DITR, DIPJ, Info. Cadastrais)
-- Integrated user guide accessible via the help button
+Extensão para Chrome que automatiza consultas INFOJUD no eCAC da Receita Federal, a partir de uma planilha Excel ou ODS com processos judiciais.
 
 ---
 
-## Supported Query Types
+## Novidades da v2.2.0
 
-| Type | Description | Entity |
-|------|-------------|--------|
-| DIRPF | Annual income tax declaration | CPF |
-| DITR | Rural property tax declaration | CPF / CNPJ |
-| DOI | Real estate transactions | CPF / CNPJ |
-| DECRED | Credit card transactions | CPF / CNPJ |
-| DIMOB | Real estate business activities | CPF / CNPJ |
-| eFinanceira | Bank accounts and investments | CPF / CNPJ |
-| ECF | Corporate income tax (2015+) | CNPJ |
-| DIPJ | Corporate income tax (until 2014) | CNPJ |
-| Info. Cadastrais | Taxpayer registration data | CPF / CNPJ |
+- **Processamento em lotes automático** — solicitações com mais de 10 itens são divididas e enviadas em lotes sequenciais para a mesma parte, sem intervenção manual
+- **Até 10 anos por tipo de consulta** — limite ampliado de 5 para 10 anos
+- **Nome oficial da Receita Federal** — a extensão captura o nome do contribuinte diretamente do eCAC após o primeiro pedido incluído
+- **Coluna de nomes opcional** — checkbox no popup permite usar a extensão sem coluna de nomes na planilha; placeholders (Parte 1, Parte 2...) são substituídos automaticamente pelo nome oficial
+- **Log .txt automático** — ao concluir envio e coleta, um arquivo de log é salvo na pasta de saída com os números dos processos processados
+- **Limpeza automática do storage** — dados temporários de processamento são removidos automaticamente ao concluir cada operação
 
 ---
 
-## Installation
+## Instalação
 
-> **Note:** This extension is distributed as unlisted on the Chrome Web Store and is intended for internal use by Brazilian Judiciary employees with valid INFOJUD access credentials.
+### Chrome
+1. Extraia o arquivo `infojob_vX.X.X.zip` em uma pasta permanente
+2. Abra `chrome://extensions/`
+3. Ative o **Modo desenvolvedor** (canto superior direito)
+4. Clique em **Carregar sem compactação**
+5. Selecione a pasta extraída
+6. A extensão aparecerá na barra de ferramentas
 
-1. Download the latest release ZIP from the [Releases](https://github.com/Rodrigo-Madalosso-Araujo/infojob/releases) page
-2. Extract the ZIP to a **permanent folder** on your computer
-3. Open Chrome and navigate to `chrome://extensions`
-4. Enable **Developer mode** (top right toggle)
-5. Click **Load unpacked** and select the extracted folder
-6. The InfoJOB lion icon will appear in your browser toolbar
-
----
-
-## How to Use
-
-1. Log in to [eCAC](https://cav.receita.fazenda.gov.br) with your GOV.BR digital certificate
-2. Navigate to the **INFOJUD** system
-3. Click the InfoJOB icon in the toolbar
-4. Select your spreadsheet (`.xlsx` or `.ods`)
-5. Configure column mapping and starting row
-6. Click **Execute automation**
-7. When responses arrive in the eCAC mailbox, click **Save responses**
-
-For detailed instructions, download the [User Guide](./InfoJOB_Guia_do_Usuario.pdf).
+> ⚠️ Não mova nem exclua a pasta após a instalação.
 
 ---
 
-## Configuration
+## Configuração inicial
 
-| Setting | Description |
-|---------|-------------|
-| Court | Exact name as shown in the eCAC dropdown |
-| Process type | e.g., Acao Trabalhista, Execucao Fiscal |
-| Justification | Default justification text for all requests |
-| Output folder | Subfolder name inside your Downloads folder |
-| Column mapping | Configure spreadsheet columns for process number, name and CPF/CNPJ |
+Na primeira instalação, a página de **Configurações** abrirá automaticamente. Configure:
 
----
-
-## Privacy & Security
-
-- **No data collection** - the extension does not store, share, or transmit any personal or case data to third parties
-- **Local processing only** - all automation occurs between the user's browser and the Federal Revenue servers
-- **No AI** - no artificial intelligence or machine learning is used
-- **LGPD compliant** - fully compliant with Brazil's General Data Protection Law
-
-For full details, see the [Privacy Policy](./InfoJOB_Politica_de_Privacidade.docx).
+- **Tipo do processo** — padrão: Ação Trabalhista
+- **Justificativa** — padrão: execução
+- **Vara** — digite exatamente como aparece no dropdown do eCAC  
+  Ex: `008 - 8ª Vara do Trabalho de Goiânia`
+- **Pasta de saída** — subpasta dentro de Downloads onde os PDFs serão salvos
+- **Consultas CPF/CNPJ** — marque as que deseja realizar e configure os anos (até 10)
 
 ---
 
-## Repository Contents
+## Como usar
 
-| File | Description |
-|------|-------------|
-| `InfoJOB_Guia_do_Usuario.pdf` | Complete user guide (Portuguese) |
-| `InfoJOB_Politica_de_Privacidade.docx` | Privacy policy |
-| `InfoJOB_Justificativas_ChromeStore.docx` | Chrome Web Store permission justifications |
-
----
-
-## Authors
-
-Developed by Brazilian Judiciary employees, for Brazilian Judiciary employees - non-profit, with dedication.
-
-- **Rodrigo Madalosso Araujo** - <rodrigo.araujo@trt18.jus.br>
-- **Leandro Vinicius de Magalhaes Rodrigues** - <leandro.rodrigues@trt19.jus.br>
+1. Faça login no **eCAC** com seu certificado digital
+2. Entre no sistema **INFOJUD** (Informações ao Judiciário)
+3. Clique no ícone do InfoJOB na barra de ferramentas
+4. Clique em **Selecionar planilha**
+5. Configure as colunas e linha inicial conforme sua planilha
+6. Confira o resumo e clique em **▶ Executar automação**
+7. Aguarde — a extensão processará todos os lotes automaticamente
+8. Quando as respostas chegarem na Caixa Postal, clique em **Salvar respostas**
 
 ---
 
-## License
+## Formato da planilha
 
-[MIT License](./LICENSE) - Free to use, modify and distribute.
+| Coluna | Conteúdo |
+|--------|----------|
+| A (padrão) | Número do processo (ex: 0000030-14.2025.5.18.0008) |
+| I (padrão) | Nome da parte — opcional, configurável |
+| H (padrão) | CPF ou CNPJ |
+
+- Os dados começam na **linha 8** por padrão (configurável)
+- Linhas duplicadas (mesmo processo + CPF/CNPJ) são ignoradas automaticamente
+- A coluna de nomes é opcional — marque/desmarque no popup
+- A pontuação é removida automaticamente
 
 ---
 
-*InfoJOB v2.1 - Developed for the Brazilian Judiciary*
+## Processamento em lotes
+
+O InfoJOB divide automaticamente solicitações com mais de 10 itens em múltiplos lotes:
+
+| Configuração | Total | Lotes |
+|---|---|---|
+| DIRPF (10 anos) + eFinanceira (10 anos) | 20 | 2 automáticos |
+| DIRPF (10) + DITR + DOI + DECRED + DIMOB + eFinanceira (10) | 26 | 3 automáticos |
+
+Não há limite prático de itens por parte.
+
+---
+
+## Nome dos arquivos gerados
+
+```
+NUMERODOPROCESSO_NOME SOBRENOME TIPOCONSULTA.pdf
+```
+
+Exemplo:
+```
+00112345620265180008_WILLIAM TASSIO DIRPF 2025.pdf
+00112345620265180008_WILLIAM TASSIO eFinanceira 01_2024 a 12_2024.zip
+```
+
+O nome usa os dois primeiros tokens válidos do nome oficial da Receita Federal (tokens com ponto são ignorados).
+
+---
+
+## Log de operações
+
+Ao concluir cada operação, um arquivo `.txt` é salvo automaticamente na pasta de saída:
+
+```
+InfoJOB_Log_envio_2026-05-15_11h00.txt
+InfoJOB_Log_coleta_2026-05-15_12h00.txt
+```
+
+Contém os números dos processos processados com sucesso e os que tiveram erro.
+
+---
+
+## Proteção de dados
+
+Esta extensão processa dados fiscais protegidos pela LGPD.
+
+- Os dados **não são enviados para servidores externos**
+- Tudo roda localmente no navegador do usuário
+- As configurações são salvas apenas no armazenamento local do navegador
+- Os dados temporários de processamento são **removidos automaticamente** ao concluir cada operação
+- A extensão não utiliza Inteligência Artificial
+
+---
+
+## Suporte
+
+Em caso de dúvidas, contate os desenvolvedores:
+- **Rodrigo Madalosso Araujo** — TRT 18ª Região · rodrigo.araujo@trt18.jus.br
+- **Leandro Vinícius de Magalhães Rodrigues** — TRT 19ª Região · leandro.rodrigues@trt19.jus.br

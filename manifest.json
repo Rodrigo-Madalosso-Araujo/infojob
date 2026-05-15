@@ -1,0 +1,104 @@
+{
+  "manifest_version": 3,
+  "name": "InfoJOB",
+  "version": "2.2.0",
+  "description": "Automação de consultas INFOJUD no eCAC da Receita Federal para uso judicial.",
+  "author": "Rodrigo Madalosso Araujo (TRT18) & Leandro Vinícius de Magalhães Rodrigues (TRT19)",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "InfoJOB — Automação INFOJUD"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://cav.receita.fazenda.gov.br/*",
+        "https://cav.receita.fazenda.gov.br/Servicos/ATSDR/Decjuiz/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://www3.cav.receita.fazenda.gov.br/*",
+        "https://cav.receita.fazenda.gov.br/servicos/ATSDR/*"
+      ],
+      "js": [
+        "content/content_iframe.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "storage",
+    "tabs",
+    "downloads",
+    "activeTab",
+    "windows",
+    "webNavigation",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://cav.receita.fazenda.gov.br/*",
+    "https://www3.cav.receita.fazenda.gov.br/*",
+    "https://cav.receita.fazenda.gov.br/servicos/*",
+    "*://servicos.receita.fazenda.gov.br/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "upload/*",
+        "InfoJOB_Guia_do_Usuario.pdf",
+        "ajuda/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    },
+    {
+      "resources": [
+        "content/*",
+        "popup/xlsx_reader.js",
+        "popup/ods_reader.js"
+      ],
+      "matches": [
+        "https://cav.receita.fazenda.gov.br/*",
+        "https://www3.cav.receita.fazenda.gov.br/*",
+        "https://servicos.receita.fazenda.gov.br/*"
+      ]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "rules",
+        "enabled": true,
+        "path": "rules/rules.json"
+      }
+    ]
+  }
+}
