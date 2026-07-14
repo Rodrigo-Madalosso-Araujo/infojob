@@ -62,11 +62,11 @@ async function carregarConfig() {
   return new Promise(resolve => {
     chrome.storage.local.get(['infojob_config', 'infojob_leitura'], r => {
       // Carrega configuração de leitura da planilha
-      const leitura = r.infojob_leitura || { linhaInicial: 8, colProcesso: 'C', colNome: 'D', colNI: 'E', temColNome: true };
-      document.getElementById('linhaInicial').value  = leitura.linhaInicial || 8;
-      document.getElementById('colProcesso').value   = leitura.colProcesso  || 'C';
-      document.getElementById('colNome').value       = leitura.colNome      || 'D';
-      document.getElementById('colNI').value         = leitura.colNI        || 'E';
+      const leitura = r.infojob_leitura || { temColNome: true };
+      document.getElementById('linhaInicial').value  = leitura.linhaInicial || '';
+      document.getElementById('colProcesso').value   = leitura.colProcesso  || '';
+      document.getElementById('colNome').value       = leitura.colNome      || '';
+      document.getElementById('colNI').value         = leitura.colNI        || '';
       document.getElementById('temColNome').checked  = leitura.temColNome !== false;
       // Habilita/desabilita campo colNome conforme checkbox
       document.getElementById('colNome').disabled    = !document.getElementById('temColNome').checked;
@@ -269,7 +269,6 @@ async function executar() {
   });
 
   chrome.tabs.update(tabId, { url: SOLICITACAO_URL, active: true });
-  chrome.windows.update(tabs[0].windowId, { focused: true });
 
   log('✓ Navegando para o eCAC... Aguardando conclusão...', 'ok');
   document.getElementById('progressLabel').textContent = 'Executando no eCAC...';
@@ -370,12 +369,21 @@ function limpar() {
 }
 
 // ── Helpers ────────────────────────────────────────────────────
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function log(msg, tipo) {
   const panel = document.getElementById('log');
   const now = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const linha = document.createElement('div');
   linha.className = 'log-line';
-  linha.innerHTML = `<span class="log-ts">${now}</span><span class="log-msg ${tipo || ''}">${msg}</span>`;
+  linha.innerHTML = `<span class="log-ts">${escapeHtml(now)}</span><span class="log-msg ${tipo || ''}">${escapeHtml(msg)}</span>`;
   panel.appendChild(linha);
   panel.scrollTop = panel.scrollHeight;
 }
@@ -447,19 +455,19 @@ function exibirResultado(sucesso, erros) {
   // Cabeçalho
   const titulo = document.createElement('div');
   titulo.className = 'log-line';
-  titulo.innerHTML = `<span class="log-msg ok">✅ Automação concluída — ${total} parte(s) processada(s)</span>`;
+  titulo.innerHTML = `<span class="log-msg ok">✅ Automação concluída — ${escapeHtml(String(total))} parte(s) processada(s)</span>`;
   panel.appendChild(titulo);
 
   // Sucessos
   if (sucesso.length > 0) {
     const hdr = document.createElement('div');
     hdr.className = 'log-line';
-    hdr.innerHTML = `<span class="log-msg ok">✔ ${sucesso.length} enviado(s) com sucesso:</span>`;
+    hdr.innerHTML = `<span class="log-msg ok">✔ ${escapeHtml(String(sucesso.length))} enviado(s) com sucesso:</span>`;
     panel.appendChild(hdr);
     sucesso.forEach(p => {
       const linha = document.createElement('div');
       linha.className = 'log-line';
-      linha.innerHTML = `<span class="log-msg">  · ${p.nome} — ${p.processo}</span>`;
+      linha.innerHTML = `<span class="log-msg">  · ${escapeHtml(p.nome)} — ${escapeHtml(p.processo)}</span>`;
       panel.appendChild(linha);
     });
   }
@@ -468,12 +476,12 @@ function exibirResultado(sucesso, erros) {
   if (erros.length > 0) {
     const hdr = document.createElement('div');
     hdr.className = 'log-line';
-    hdr.innerHTML = `<span class="log-msg warn">⚠ ${erros.length} com erro:</span>`;
+    hdr.innerHTML = `<span class="log-msg warn">⚠ ${escapeHtml(String(erros.length))} com erro:</span>`;
     panel.appendChild(hdr);
     erros.forEach(p => {
       const linha = document.createElement('div');
       linha.className = 'log-line';
-      linha.innerHTML = `<span class="log-msg err">  · ${p.nome} — ${p.processo}<br>&nbsp;&nbsp;&nbsp;${p.erro}</span>`;
+      linha.innerHTML = `<span class="log-msg err">  · ${escapeHtml(p.nome)} — ${escapeHtml(p.processo)}<br>&nbsp;&nbsp;&nbsp;${escapeHtml(p.erro || '')}</span>`;
       panel.appendChild(linha);
     });
   }

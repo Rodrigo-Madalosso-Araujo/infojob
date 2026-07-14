@@ -1,4 +1,4 @@
-// content.js — InfoJOB v2.2.0
+// content.js — InfoJOB v2.2.4
 // Executa dentro do contexto da página eCAC
 
 if (window.__infojobAtivo) {
@@ -19,7 +19,7 @@ window.alert = function(msg) {
   chrome.runtime.sendMessage({ acao: 'iframe_alert', texto: msg || '' });
 };
 
-console.log('InfoJOB v2.2.0 | URL:', window.location.href);
+console.log('InfoJOB v2.2.4 | URL:', window.location.href);
 
 // ── Listeners ──────────────────────────────────────────────────
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -94,7 +94,7 @@ async function verificarEExecutar() {
   if (idx >= total) {
     await storageSet({ infojob_executando: false, infojob_resultado_pendente: true });
     await salvarLogTxt('envio', data.infojob_sucesso || [], data.infojob_erros || [], data.infojob_config);
-    await new Promise(r => chrome.storage.local.clear(r));
+    await limparStorageAutomacao();
     exibirModalResultado(data.infojob_sucesso || [], data.infojob_erros || []);
     return;
   }
@@ -312,7 +312,7 @@ async function processarTodasNaoLidas(config) {
 
   // Resultado final
   await salvarLogTxt('coleta', sucessosColeta, errosColeta, config);
-  await new Promise(r => chrome.storage.local.clear(r));
+  await limparStorageAutomacao();
   exibirModalCaixaPostal(
     processadas,
     erros > 0 ? erros + ' mensagem(ns) não puderam ser processadas' : null
@@ -584,7 +584,7 @@ async function baixarPDFsResultado(parte, config) {
         anoData,
         ni: onclick.match(/ni=([^&]+)/)?.[1] || niContrib,
         niFormatado: niContrib,
-        tipoNi: onclick.match(/tipoNi=([^&]+)/)?.[1] || '1',
+        tipoNi: parte.tipo === 'CNPJ' ? '2' : '1',
         filename: numProcesso + '_' + nomeContrib + ' ' + tipoLabel + '.pdf',
         tituloOverride: tipo === 'DITR' ? 'DITR' : 'DIPJ / PJ Simples'
       });
@@ -602,7 +602,7 @@ async function baixarPDFsResultado(parte, config) {
         anoData: anoData || '',
         ni: onclick.match(/ni=([^&]+)/)?.[1] || niContrib,
         niFormatado: niContrib,
-        tipoNi: onclick.match(/tipoNi=([^&]+)/)?.[1] || '1',
+        tipoNi: parte.tipo === 'CNPJ' ? '2' : '1',
         filename: numProcesso + '_' + nomeContrib + ' INFO CADASTRAIS.pdf',
         tituloOverride: 'Informacoes Cadastrais'
       });
@@ -755,15 +755,31 @@ async function preencherCabecalho(parte, config) {
   console.log('InfoJOB: preenchendo cabeçalho para', parte.nomeAbrev);
   await sleep(800);
 
-  const inputProcesso = document.querySelector('input[name="processo"]');
-  const selectTipo    = document.querySelector('select[name="tipos de processo"]');
-  const selectVara    = document.querySelector('select[name="nomevara"], select[name="siglavara"]');
-  const textarea      = document.querySelector('textarea');
+  const inputProcesso    = document.querySelector('input[name="processo"]');
+  const selectTipo       = document.querySelector('select[name="tipos de processo"]');
+  const selectVara       = document.querySelector('select[name="nomevara"], select[name="siglavara"]');
+  const selectMagistrado = document.querySelector('select[name="cpfmagistrado"]');
+  const textarea         = document.querySelector('textarea');
 
   if (inputProcesso) { digitarTexto(inputProcesso, parte.processo.replace(/\D/g, '')); await sleep(300); }
   if (selectTipo)    { selecionarOpcaoTexto(selectTipo, config.processo.tipo); await sleep(300); }
   if (selectVara)    { selecionarOpcaoTexto(selectVara, config.processo.vara); await sleep(300); }
   if (textarea)      { textarea.value = config.processo.justificativa; textarea.dispatchEvent(new Event('change', { bubbles: true })); }
+
+  // Seleciona magistrado se configurado e se há mais de um no dropdown
+  if (selectMagistrado && config.processo.magistrado) {
+    const nomeMag = config.processo.magistrado.trim().toUpperCase();
+    const opcoes  = Array.from(selectMagistrado.options);
+    const match   = opcoes.find(o => o.text.trim().toUpperCase().includes(nomeMag));
+    if (match) {
+      selectMagistrado.value = match.value;
+      selectMagistrado.dispatchEvent(new Event('change', { bubbles: true }));
+      await sleep(300);
+      console.log('InfoJOB: magistrado selecionado:', match.text.trim());
+    } else {
+      console.warn('InfoJOB: magistrado não encontrado no dropdown:', nomeMag);
+    }
+  }
 
   console.log('InfoJOB: cabeçalho preenchido');
 }
@@ -1129,6 +1145,15 @@ async function salvarLogTxt(tipo, sucesso, erros, config) {
   }
 }
 
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function doisPrimeirosNomes(nomeCompleto) {
   // Ignora tokens com ponto (ex: 19.202.038), pega os dois primeiros nomes restantes
   const tokens = (nomeCompleto || '').trim().split(/\s+/);
@@ -1174,6 +1199,16 @@ function mesAnoCorrente() {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function storageGet(keys) { return new Promise(r => chrome.storage.local.get(keys, r)); }
 function storageSet(obj)  { return new Promise(r => chrome.storage.local.set(obj, r)); }
+
+// Remove apenas chaves de automação, preservando configurações do usuário
+function limparStorageAutomacao() {
+  const chavesAutomacao = [
+    'infojob_fila', 'infojob_idx', 'infojob_etapa', 'infojob_executando',
+    'infojob_sucesso', 'infojob_erros', 'infojob_lote_pedidos', 'infojob_lote_offset',
+    'infojob_resultado_pendente', 'infojob_url_registro'
+  ];
+  return new Promise(r => chrome.storage.local.remove(chavesAutomacao, r));
+}
 
 // ── Aguarda confirmação de download iniciado (vinda do background) ─
 let _downloadIniciado = null;
@@ -1228,15 +1263,15 @@ function exibirModalResultado(sucesso, erros) {
   if (sucesso.length > 0) {
     linhas += `<p style="margin:8px 0 4px;color:#15803d;font-weight:bold">✔ ${sucesso.length} enviado(s) com sucesso:</p>`;
     sucesso.forEach(p => {
-      linhas += `<p style="margin:2px 0 2px 12px;color:#166534">· ${p.nome} — ${p.processo}</p>`;
+      linhas += `<p style="margin:2px 0 2px 12px;color:#166534">· ${escapeHtml(p.nome)} — ${escapeHtml(p.processo)}</p>`;
     });
   }
 
   if (erros.length > 0) {
     linhas += `<p style="margin:8px 0 4px;color:#b45309;font-weight:bold">⚠ ${erros.length} com erro:</p>`;
     erros.forEach(p => {
-      linhas += `<p style="margin:2px 0 2px 12px;color:#92400e">· ${p.nome} — ${p.processo}</p>`;
-      linhas += `<p style="margin:0 0 2px 24px;color:#b45309;font-size:11px">${p.erro}</p>`;
+      linhas += `<p style="margin:2px 0 2px 12px;color:#92400e">· ${escapeHtml(p.nome)} — ${escapeHtml(p.processo)}</p>`;
+      linhas += `<p style="margin:0 0 2px 24px;color:#b45309;font-size:11px">${escapeHtml(p.erro || '')}</p>`;
     });
   }
 

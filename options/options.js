@@ -25,6 +25,7 @@
         tipo: document.getElementById('tipoProcesso').value,
         justificativa: document.getElementById('justificativa').value,
         vara: document.getElementById('vara').value,
+        magistrado: document.getElementById('magistrado').value,
       },
       pastaSaida: document.getElementById('pastaSaida').value,
       cpf: {
@@ -68,6 +69,7 @@
       document.getElementById('tipoProcesso').value = cfg.processo.tipo || 'Ação Trabalhista';
       document.getElementById('justificativa').value = cfg.processo.justificativa || 'execução';
       document.getElementById('vara').value = cfg.processo.vara || '';
+      document.getElementById('magistrado').value = cfg.processo.magistrado || '';
     }
     if (cfg.pastaSaida) document.getElementById('pastaSaida').value = cfg.pastaSaida;
 

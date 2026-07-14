@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <title>InfoJOB</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 300; src: url('../fonts/IBMPlexSans-300.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 400; src: url('../fonts/IBMPlexSans-400.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 500; src: url('../fonts/IBMPlexSans-500.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 600; src: url('../fonts/IBMPlexSans-600.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('../fonts/IBMPlexMono-400.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('../fonts/IBMPlexMono-500.woff2') format('woff2'); }
 
   :root {
     --bg: #f4f6f9;
@@ -235,7 +240,6 @@
   <div class="upload-area" id="uploadArea">
     <div class="upload-icon">📊</div>
     <div class="upload-title">Selecionar relatório Excel</div>
-    <div class="upload-sub">Colunas A (processo) · H (CPF/CNPJ) · I (nome)</div>
     <div class="upload-file" id="fileName"></div>
   </div>
 
@@ -245,28 +249,24 @@
     <div class="config-body">
       <div class="config-row">
         <span class="config-label">Linha inicial dos dados</span>
-        <input type="number" id="linhaInicial" value="8" min="1" max="500" style="width:52px;">
-        <span style="font-size:11px;color:var(--text2);">primeira linha com processo</span>
+        <input type="number" id="linhaInicial" placeholder="ex.: 8" min="1" max="500" style="width:52px;">
       </div>
       <hr style="border:none;border-top:1px solid var(--border);margin:6px 0;">
       <span style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;">Letra da coluna</span>
       <div class="config-row" style="margin-top:6px;">
         <span class="config-label">Número do processo</span>
-        <input type="text" id="colProcesso" value="A" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
-      </div>
-      <div class="config-row">
-        <span class="config-label">Nome da parte</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <input type="text" id="colNome" value="I" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
-          <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2);cursor:pointer;">
-            <input type="checkbox" id="temColNome" checked style="cursor:pointer;">
-            Planilha tem coluna de nomes
-          </label>
-        </div>
+        <input type="text" id="colProcesso" placeholder="A" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
       </div>
       <div class="config-row">
         <span class="config-label">CPF / CNPJ</span>
-        <input type="text" id="colNI" value="H" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
+        <input type="text" id="colNI" placeholder="B" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
+      </div>
+      <div class="config-row">
+        <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2);cursor:pointer;flex:1;">
+          <input type="checkbox" id="temColNome" checked style="cursor:pointer;">
+          Nome da parte
+        </label>
+        <input type="text" id="colNome" placeholder="C" maxlength="2" style="width:36px;text-align:center;text-transform:uppercase;">
       </div>
       <div style="font-size:10px;color:var(--success);margin-top:6px;">Estas configurações ficam salvas automaticamente.</div>
     </div>
@@ -338,7 +338,7 @@
 </div>
 
 <div class="footer">
-  <span>InfoJOB v2.2.0</span>
+  <span>InfoJOB v2.2.4</span>
   <span>TRT18 · TRT19</span>
 </div>
 

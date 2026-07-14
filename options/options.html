@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>InfoJOB — Configurações</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 300; src: url('../fonts/IBMPlexSans-300.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 400; src: url('../fonts/IBMPlexSans-400.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 500; src: url('../fonts/IBMPlexSans-500.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Sans'; font-weight: 600; src: url('../fonts/IBMPlexSans-600.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-weight: 400; src: url('../fonts/IBMPlexMono-400.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-weight: 500; src: url('../fonts/IBMPlexMono-500.woff2') format('woff2'); }
 
   :root {
     --bg: #f4f6f9;
@@ -437,13 +442,18 @@
         </div>
         <div class="form-group">
           <label class="field-label">Justificativa</label>
-          <input type="text" id="justificativa" value="execução">
+          <input type="text" id="justificativa" placeholder="Ex: Execução">
         </div>
       </div>
       <div class="form-group">
         <label class="field-label">Vara (exatamente como aparece no dropdown do eCAC)</label>
-        <input type="text" id="vara" class="mono" value="008 - 8ª Vara do Trabalho de Goiânia">
+        <input type="text" id="vara" class="mono" placeholder='Ex: 008 - 8ª Vara do Trabalho de Goiânia'>
         <span class="field-hint">A extensão buscará esse texto exato no dropdown. Ex: "008 - 8ª Vara do Trabalho de Goiânia"</span>
+      </div>
+      <div class="form-group">
+        <label class="field-label">Magistrado Solicitante (exatamente como aparece no dropdown do eCAC)</label>
+        <input type="text" id="magistrado" class="mono" placeholder="Ex: NOME DO MAGISTRADO">
+        <span class="field-hint">Quando houver mais de um magistrado cadastrado, a extensão selecionará automaticamente o nome informado.</span>
       </div>
     </div>
   </div>
