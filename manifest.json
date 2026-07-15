@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "InfoJOB",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Automação de consultas INFOJUD no eCAC da Receita Federal para uso judicial.",
   "author": "Rodrigo Madalosso Araujo (TRT18) & Leandro Vinícius de Magalhães Rodrigues (TRT19)",
   "icons": {
